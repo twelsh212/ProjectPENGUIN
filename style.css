@@ -1,7 +1,7 @@
 #gridbox {
 	width: 50px;
 	height: 50px;
-	border: 2px solid black;
+	border: 1px solid black;
 	position: fixed;
 	background-color: blue;
 }
@@ -9,15 +9,15 @@
 	width: 50px;
 	height: 50px;
 	left: 60px;
-	border: 2px solid black;
+	border: 1px solid black;
 	position: fixed;
 	background-color: blue;
 }
 #gridbox3 {
 	width: 50px;
 	height: 50px;
-	left: 112px;
-	border: 2px solid black;
+	left: 112px; 
+ 	border: 1px solid black;
 	position: fixed;
 	background-color: blue;
 }
@@ -25,7 +25,23 @@
 	width: 50px;
 	height: 50px;
 	left: 164px;
-	border: 2px solid black;
+	border: 1px solid black;
+	position: fixed;
+	background-color: blue;
+}
+#gridbox5 {
+	width: 50px;
+	height: 50px;
+	top: 60px;
+	border: 1px solid black;
+	position: fixed;
+	background-color: blue;
+}
+#gridbox6 {
+	width: 50px;
+	height: 50px;
+	top: 112px;
+	border: 1px solid black;
 	position: fixed;
 	background-color: blue;
 }
