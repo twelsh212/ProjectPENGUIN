@@ -5,24 +5,21 @@
 </head>
 	<body>
 		<div id='container'>
-			<div id='gridbox'>
-				
+			<table id='gridbox'>
+				<tr>
+					
+				</tr>
+				<script>
+					var table = document.getElementById("gridbox");
+					for(var i = 0; i <= 20; i++){
+						var row = table.insertRow(i);
+						for(var j = 0; j <= 20; j++){
+							var cell1 = row.insertCell(j);
+						}
+					}
+			</script>
 			</div>
-			<div id='gridbox2'>
-				
-			</div>
-			<div id='gridbox3'>
-				
-			</div>
-			<div id='gridbox4'>
-				
-			</div>
-			<div id='gridbox5'>
-				
-			</div>
-			<div id='gridbox6'>
-				
-			</div>
+			
 		</div>
 	</body>
 </html>
