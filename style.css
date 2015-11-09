@@ -11,8 +11,8 @@
   	margin-top: 100px;
   	margin-bottom: 100px;
 }
-#playGrid{
-	display: inline-block;	
+#canvas{
+	border:5px solid black;
 }
 .playCell{
 	width: 25px;
