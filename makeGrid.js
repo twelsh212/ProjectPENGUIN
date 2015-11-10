@@ -68,7 +68,7 @@
 	        	var zy = 0;
 	        	var zx = 0;
 	        	if(cx != 0){
-	        		zx = cx - tile_size;;
+	        		zx = cx - tile_size;
 		        	zx /= tile_size;
 	        	}
 	        	if(cy != 0){
@@ -83,8 +83,18 @@
 	            
 	        //up
 	        case 87:
-	        	//var check = collisionDet(cx, cy - 1, level);
-	        	if(true){
+	        	var zy = 0;
+	        	var zx = 0;
+	        	if(cx != 0){
+	        		
+		        	zx = cx / tile_size;
+	        	}
+	        	if(cy != 0){
+		        	zy = cy - tile_size;
+		        	zy /= tile_size;
+	        	}
+	       
+	        	if(cy != 0 && level[zy][zx] != 1){
                 	renderLevel();
 					context.fillRect(cx, cy - tile_size, tile_size, tile_size);
 					cy -= tile_size;
@@ -93,8 +103,16 @@
 	            
 	        //right
 	        case 68:
-	        	//var check = collisionDet(cx + 1, cy, level);
-	        	if(true){
+	        	var zy = 0;
+	        	var zx = 0;
+	        	if(cx != 0){
+	        		zx = cx + tile_size;
+		        	zx /= tile_size;
+	        	}
+	        	if(cy != 0){
+		        	zy = cy / tile_size;
+	        	}
+	        	if(cx != canvas.width - tile_size && level[zy][zx] != 1){
                 	renderLevel();
 					context.fillRect(cx + tile_size, cy, tile_size, tile_size);
 					cx += tile_size;
@@ -103,8 +121,16 @@
 	        
 	        //down
 	        case 83:
-	        	//var check = collisionDet(cx, cy + 1,level);
-	        	if(true){
+	        	var zy = 0;
+	        	var zx = 0;
+	        	if(cx != 0){		
+		        	zx = cx / tile_size;
+	        	}
+	        	if(cy != 0){
+		        	zy = cy + tile_size;
+		        	zy /= tile_size;
+	        	}
+	        	if(cy != canvas.height - tile_size && level[zy][zx] != 1){
                 	renderLevel();
 					context.fillRect(cx, cy + tile_size, tile_size, tile_size);
 					cy += tile_size;
