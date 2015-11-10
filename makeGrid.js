@@ -50,13 +50,13 @@
 		context.fillStyle = "#00ff00";
 	}
 	
-	function collisionDet(posX, posY){
-		var collCheck = true;
-		if(level[posX][posY] == 1){
-			collCheck = false;
-		}
-		return collCheck;
-	}
+	// function collisionDet(posX, posY){
+	// 	var collCheck = true;
+	// 	if(level[posX][posY] == 1){
+	// 		collCheck = false;
+	// 	}
+	// 	return collCheck;
+	// }
 
 	context.fillRect(startX, startY, tile_size, tile_size);
 
@@ -65,16 +65,16 @@
 	    {
 	        //left
 	        case 65:
-	        	var zx = 0;
 	        	var zy = 0;
+	        	var zx = 0;
 	        	if(cx != 0){
-		        	zx = cx / tile_size;
-		        	zx--;
+	        		zx = cx - tile_size;;
+		        	zx /= tile_size;
 	        	}
 	        	if(cy != 0){
 		        	zy = cy / tile_size;
 	        	}
-	        	if(collisionDet(zx, zy)){
+	        	if(cx != 0 && level[zy][zx] != 1){
                 	renderLevel();
 					context.fillRect(cx - tile_size, cy, tile_size, tile_size);
 					cx -= tile_size;
