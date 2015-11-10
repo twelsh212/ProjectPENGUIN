@@ -49,6 +49,14 @@
 		// player = green box
 		context.fillStyle = "#00ff00";
 	}
+	
+	function collisionDet(posX, posY){
+		var collCheck = true;
+		if(level[posX][posY] == 1){
+			collCheck = false;
+		}
+		return collCheck;
+	}
 
 	context.fillRect(startX, startY, tile_size, tile_size);
 
@@ -57,30 +65,50 @@
 	    {
 	        //left
 	        case 65:
-                renderLevel();
-                context.fillRect(cx - tile_size, cy, tile_size, tile_size);
-                cx -= tile_size;
+	        	var zx = 0;
+	        	var zy = 0;
+	        	if(cx != 0){
+		        	zx = cx / tile_size;
+		        	zx--;
+	        	}
+	        	if(cy != 0){
+		        	zy = cy / tile_size;
+	        	}
+	        	if(collisionDet(zx, zy)){
+                	renderLevel();
+					context.fillRect(cx - tile_size, cy, tile_size, tile_size);
+					cx -= tile_size;
+                }
 	        break;
 	            
 	        //up
 	        case 87:
-                renderLevel();
-                context.fillRect(cx, cy - tile_size, tile_size, tile_size);
-                cy -= tile_size;
+	        	//var check = collisionDet(cx, cy - 1, level);
+	        	if(true){
+                	renderLevel();
+					context.fillRect(cx, cy - tile_size, tile_size, tile_size);
+					cy -= tile_size;
+                }
 	        break;
 	            
 	        //right
 	        case 68:
-                renderLevel();
-                context.fillRect(cx + tile_size, cy, tile_size, tile_size);
-                cx += tile_size;
+	        	//var check = collisionDet(cx + 1, cy, level);
+	        	if(true){
+                	renderLevel();
+					context.fillRect(cx + tile_size, cy, tile_size, tile_size);
+					cx += tile_size;
+                }
 	        break;
 	        
 	        //down
 	        case 83:
-                renderLevel();
-                context.fillRect(cx, cy + tile_size, tile_size, tile_size);
-                cy += tile_size;
+	        	//var check = collisionDet(cx, cy + 1,level);
+	        	if(true){
+                	renderLevel();
+					context.fillRect(cx, cy + tile_size, tile_size, tile_size);
+					cy += tile_size;
+				}
 	        break;
 	    }
 	    
