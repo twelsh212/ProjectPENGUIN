@@ -10,6 +10,7 @@
 	canvas.width = 500;
 	var levelRows=40;	
 	canvas.height = 400;
+	var moves = 5;
 
 	var level = [];
 	for(var i=0; i<levelRows; i++) {
@@ -50,6 +51,14 @@
 		context.fillStyle = "#00ff00";
 	}
 	
+	function moveRestr(){
+		var isStop = false;
+		if(moves == 0){
+			isStop = true;
+		}
+		return isStop;
+	}
+	
 	// function collisionDet(posX, posY){
 	// 	var collCheck = true;
 	// 	if(level[posX][posY] == 1){
@@ -61,83 +70,101 @@
 	context.fillRect(startX, startY, tile_size, tile_size);
 
 	$(document).bind("keydown", function(e){
+	   
 	    switch(e.keyCode)
 	    {
 	        //left
 	        case 65:
-	        	var zy = 0;
-	        	var zx = 0;
-	        	if(cx != 0){
-	        		zx = cx - tile_size;
-		        	zx /= tile_size;
-	        	}
-	        	if(cy != 0){
-		        	zy = cy / tile_size;
-	        	}
-	        	if(cx != 0 && level[zy][zx] != 1){
-                	renderLevel();
-					context.fillRect(cx - tile_size, cy, tile_size, tile_size);
-					cx -= tile_size;
-                }
+	        	if(!moveRestr()){	
+			        var zy = 0;
+			       	var zx = 0;
+			       	if(cx != 0){
+			       		zx = cx - tile_size;
+				       	zx /= tile_size;
+			       	}
+			       	if(cy != 0){
+			        	zy = cy / tile_size;
+		        	}
+			        if(cx != 0 && level[zy][zx] != 1){
+		               	renderLevel();
+						context.fillRect(cx - tile_size, cy, tile_size, tile_size);
+						cx -= tile_size;
+						moves--;
+		            }
+	            }
 	        break;
 	            
 	        //up
 	        case 87:
-	        	var zy = 0;
-	        	var zx = 0;
-	        	if(cx != 0){
-	        		
-		        	zx = cx / tile_size;
-	        	}
-	        	if(cy != 0){
-		        	zy = cy - tile_size;
-		        	zy /= tile_size;
-	        	}
-	       
-	        	if(cy != 0 && level[zy][zx] != 1){
-                	renderLevel();
-					context.fillRect(cx, cy - tile_size, tile_size, tile_size);
-					cy -= tile_size;
+	        	if(!moveRestr()){
+		        	var zy = 0;
+		        	var zx = 0;
+		        	if(cx != 0){
+		        		
+			        	zx = cx / tile_size;
+		        	}
+		        	if(cy != 0){
+			        	zy = cy - tile_size;
+			        	zy /= tile_size;
+		        	}
+		       
+		        	if(cy != 0 && level[zy][zx] != 1){
+	                	renderLevel();
+						context.fillRect(cx, cy - tile_size, tile_size, tile_size);
+						cy -= tile_size;
+						moves--;
+	                }
                 }
 	        break;
 	            
 	        //right
 	        case 68:
-	        	var zy = 0;
-	        	var zx = 0;
-	        	if(cx != 0){
-	        		zx = cx + tile_size;
-		        	zx /= tile_size;
-	        	}
-	        	if(cy != 0){
-		        	zy = cy / tile_size;
-	        	}
-	        	if(cx != canvas.width - tile_size && level[zy][zx] != 1){
-                	renderLevel();
-					context.fillRect(cx + tile_size, cy, tile_size, tile_size);
-					cx += tile_size;
+	        	if(!moveRestr()){
+		        	var zy = 0;
+		        	var zx = 0;
+		        	if(cx != 0){
+		        		zx = cx + tile_size;
+			        	zx /= tile_size;
+		        	}
+		        	if(cy != 0){
+			        	zy = cy / tile_size;
+		        	}
+		        	if(cx != canvas.width - tile_size && level[zy][zx] != 1){
+	                	renderLevel();
+						context.fillRect(cx + tile_size, cy, tile_size, tile_size);
+						cx += tile_size;
+						moves--;
+	                }
                 }
 	        break;
 	        
 	        //down
 	        case 83:
-	        	var zy = 0;
-	        	var zx = 0;
-	        	if(cx != 0){		
-		        	zx = cx / tile_size;
-	        	}
-	        	if(cy != 0){
-		        	zy = cy + tile_size;
-		        	zy /= tile_size;
-	        	}
-	        	if(cy != canvas.height - tile_size && level[zy][zx] != 1){
-                	renderLevel();
-					context.fillRect(cx, cy + tile_size, tile_size, tile_size);
-					cy += tile_size;
+	        	if(!moveRestr()){
+		        	var zy = 0;
+		        	var zx = 0;
+		        	if(cx != 0){		
+			        	zx = cx / tile_size;
+		        	}
+		        	if(cy != 0){
+			        	zy = cy + tile_size;
+			        	zy /= tile_size;
+		        	}
+		        	if(cy != canvas.height - tile_size && level[zy][zx] != 1){
+	                	renderLevel();
+						context.fillRect(cx, cy + tile_size, tile_size, tile_size);
+						cy += tile_size;
+						moves--;
+					}
 				}
 	        break;
+	        
+	        //end turn
+	        case 84:
+	        	moves = 5;
+	        break;
 	    }
-	    
+	  
 	});
  
 })();
