@@ -1,16 +1,34 @@
 (function(){
+	
+	
+
 	var canvas = document.getElementById("canvas");   // the canvas where game will be drawn
 	var context = canvas.getContext("2d");            // canvas context
 	var tile_size = 10;
-	var up = false;
-	var down = false;
-	var left = false;
-	var right = false;
 	var levelCols=50;
 	canvas.width = 500;
 	var levelRows=40;	
 	canvas.height = 400;
 	var moves = 5;
+
+	var player1 = {
+		startX: 0,
+		startY: 0,
+		cx: 0,
+		cy: 0,
+		isTurn: true,
+		moves: 5,
+		pColor: "#00ff00"
+	};
+	var player2 = {
+		startX: canvas.width - tile_size,
+		startY: canvas.height - tile_size,
+		cx: canvas.width - tile_size,
+		cy: canvas.height - tile_size,
+		isTurn: false,
+		moves: 5,
+		pColor: "#0000ff"
+	};
 
 	var level = [];
 	for(var i=0; i<levelRows; i++) {
@@ -18,17 +36,13 @@
 	    for(var j=0; j<levelCols; j++) {
 	        level[i][j] = Math.floor((Math.random() * 100) % 29);
 	    }
-	}   
- 
-	var startX = canvas.width / 2;
-	var startY = canvas.height / 2;
-
-	// current x, y
-	var cx = startX;
-	var cy = startY;
+	}  
 
 	//player1 start
-	context.fillRect(startX, startY, tile_size, tile_size);             
+	context.fillRect(player1.startX, player1.startY, tile_size, tile_size);     
+
+	//player2 start
+	context.fillRect(player2.startX, player2.startY, tile_size, tile_size);         
 	
 	renderLevel();
 	
@@ -48,15 +62,15 @@
 		}
 
 		// player = green box
-		context.fillStyle = "#00ff00";
+		context.fillStyle = player1.pColor;
 	}
 	
-	function moveRestr(){
-		var isStop = false;
-		if(moves == 0){
-			isStop = true;
+	function moveRestr(currentPlayer){
+		var isDone = false;
+		if(currentPlayer.moves == 0){
+			isDone = true;
 		}
-		return isStop;
+		return isDone;
 	}
 	
 	// function collisionDet(posX, posY){
@@ -67,104 +81,155 @@
 	// 	return collCheck;
 	// }
 
-	context.fillRect(startX, startY, tile_size, tile_size);
+	context.fillRect(player1.startX, player1.startY, tile_size, tile_size);
+	context.fillRect(player2.startX, player2.startY, tile_size, tile_size);
 
+	function moveLeft(currentPlayer){
+		if(!moveRestr(currentPlayer)){	
+	        var zy = 0;
+	       	var zx = 0;
+	       	if(currentPlayer.cx != 0){
+	       		zx = currentPlayer.cx - tile_size;
+		       	zx /= tile_size;
+	       	}
+	       	if(currentPlayer.cy != 0){
+	        	zy = currentPlayer.cy / tile_size;
+        	}
+	        if(currentPlayer.cx != 0 && level[zy][zx] != 1){
+               	renderLevel();
+				currentPlayer.cx -= tile_size;
+				currentPlayer.moves--;
+            }
+        }		
+	}
+
+	function moveUp(currentPlayer){
+		if(!moveRestr(currentPlayer)){
+        	var zy = 0;
+        	var zx = 0;
+        	if(currentPlayer.cx != 0){
+        		
+	        	zx = currentPlayer.cx / tile_size;
+        	}
+        	if(currentPlayer.cy != 0){
+	        	zy = currentPlayer.cy - tile_size;
+	        	zy /= tile_size;
+        	}
+       
+        	if(currentPlayer.cy != 0 && level[zy][zx] != 1){
+            	renderLevel();
+				currentPlayer.cy -= tile_size;
+				currentPlayer.moves--;
+            }
+        }
+	}
+
+	function moveRight(currentPlayer){
+		if(!moveRestr(currentPlayer)){
+        	var zy = 0;
+        	var zx = 0;
+        	if(currentPlayer.cx != 0){
+        		zx = currentPlayer.cx + tile_size;
+	        	zx /= tile_size;
+        	}
+        	if(currentPlayer.cy != 0){
+	        	zy = currentPlayer.cy / tile_size;
+        	}
+        	if(currentPlayer.cx != canvas.width - tile_size && level[zy][zx] != 1){
+            	renderLevel();
+				currentPlayer.cx += tile_size;
+				currentPlayer.moves--;
+            }
+        }
+	}
+
+	function moveDown(currentPlayer){
+		if(!moveRestr(currentPlayer)){
+	    	var zy = 0;
+	    	var zx = 0;
+	    	if(currentPlayer.cx != 0){		
+	        	zx = currentPlayer.cx / tile_size;
+	    	}
+	    	if(currentPlayer.cy != 0){
+	        	zy = currentPlayer.cy + tile_size;
+	        	zy /= tile_size;
+	    	}
+	    	if(currentPlayer.cy != canvas.height - tile_size && level[zy][zx] != 1){
+	        	renderLevel();
+				currentPlayer.cy += tile_size;
+				currentPlayer.moves--;
+			}
+		}
+	}
+
+	function fillPlayer(p1, p2){
+		context.fillRect(p1.cx, p1.cy, tile_size, tile_size);
+		context.fillRect(p2.cx, p2.cy, tile_size, tile_size);
+	}
 	$(document).bind("keydown", function(e){
-	   
-	    switch(e.keyCode)
+	  	switch(e.keyCode)
 	    {
 	        //left
 	        case 65:
-	        	if(!moveRestr()){	
-			        var zy = 0;
-			       	var zx = 0;
-			       	if(cx != 0){
-			       		zx = cx - tile_size;
-				       	zx /= tile_size;
-			       	}
-			       	if(cy != 0){
-			        	zy = cy / tile_size;
-		        	}
-			        if(cx != 0 && level[zy][zx] != 1){
-		               	renderLevel();
-						context.fillRect(cx - tile_size, cy, tile_size, tile_size);
-						cx -= tile_size;
-						moves--;
-		            }
-	            }
+	        	if (player1.isTurn){
+			  		moveLeft(player1);
+			  	}
+			  	else if(player2.isTurn){
+			  		moveLeft(player2);
+			  	}
+	        	fillPlayer(player1, player2);
 	        break;
 	            
 	        //up
 	        case 87:
-	        	if(!moveRestr()){
-		        	var zy = 0;
-		        	var zx = 0;
-		        	if(cx != 0){
-		        		
-			        	zx = cx / tile_size;
-		        	}
-		        	if(cy != 0){
-			        	zy = cy - tile_size;
-			        	zy /= tile_size;
-		        	}
-		       
-		        	if(cy != 0 && level[zy][zx] != 1){
-	                	renderLevel();
-						context.fillRect(cx, cy - tile_size, tile_size, tile_size);
-						cy -= tile_size;
-						moves--;
-	                }
-                }
+	        	if (player1.isTurn){
+			  		moveUp(player1);
+			  	}
+			  	else if(player2.isTurn){
+			  		moveUp(player2);
+			  	}
+	        	fillPlayer(player1, player2);
 	        break;
 	            
 	        //right
 	        case 68:
-	        	if(!moveRestr()){
-		        	var zy = 0;
-		        	var zx = 0;
-		        	if(cx != 0){
-		        		zx = cx + tile_size;
-			        	zx /= tile_size;
-		        	}
-		        	if(cy != 0){
-			        	zy = cy / tile_size;
-		        	}
-		        	if(cx != canvas.width - tile_size && level[zy][zx] != 1){
-	                	renderLevel();
-						context.fillRect(cx + tile_size, cy, tile_size, tile_size);
-						cx += tile_size;
-						moves--;
-	                }
-                }
+	        	if (player1.isTurn){
+			  		moveRight(player1);
+			  	}
+			  	else if(player2.isTurn){
+			  		moveRight(player2);
+			  	}
+			  	fillPlayer(player1, player2);
 	        break;
 	        
 	        //down
 	        case 83:
-	        	if(!moveRestr()){
-		        	var zy = 0;
-		        	var zx = 0;
-		        	if(cx != 0){		
-			        	zx = cx / tile_size;
-		        	}
-		        	if(cy != 0){
-			        	zy = cy + tile_size;
-			        	zy /= tile_size;
-		        	}
-		        	if(cy != canvas.height - tile_size && level[zy][zx] != 1){
-	                	renderLevel();
-						context.fillRect(cx, cy + tile_size, tile_size, tile_size);
-						cy += tile_size;
-						moves--;
-					}
-				}
+	        	if (player1.isTurn){
+			  		moveDown(player1);
+			  	}
+			  	else if(player2.isTurn){
+			  		moveDown(player2);
+			  	}
+	        	fillPlayer(player1, player2);
 	        break;
 	        
 	        //end turn
 	        case 84:
-	        	moves = 5;
+	        	if (player1.isTurn){
+			  		player1.isTurn = false;
+			  		player2.isTurn = true;
+			  		player1.moves = 5;
+			  	}
+			  	else if(player2.isTurn){
+			  		player2.isTurn = false;
+			  		player1.isTurn = true;
+			  		player2.moves = 5;
+			  	}
 	        break;
 	    }
-	  
+
+
+	  	
 	});
  
 })();
